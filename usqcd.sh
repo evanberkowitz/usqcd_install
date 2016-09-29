@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/local/bin/bash
+# Your preferred bash must have associative arrays, or LOTS of things will fail.
+# Practically speaking, this means you need bash version 4 or later.
 
 # USQCD Install Script, by Evan Berkowitz
 # for my Mac, as of 2016-07-01

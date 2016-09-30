@@ -1,10 +1,65 @@
 #!/usr/local/bin/bash
+# Installer suite for USQCD and related packages.
+# Copyright (C) 2016  Evan Berkowitz
+
 
 if [[ ! ${BASH_VERSINFO[0]} -gt 3 ]]; then
     # Your preferred bash must have associative arrays, or LOTS of things will fail.
     # Practically speaking, this means you need bash version 4 or later.
     echo "bash version 4+ required."
     exit -1
+fi
+
+if [[ "1" == "$#" && "license" == "$1" ]]; then
+    echo "usqcd.sh
+    Installer suite for USQCD and related packages.
+    Copyright (C) 2016  Evan Berkowitz
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>."
+    exit
+fi
+
+if [[ ! "3" == "$#" ]]; then
+    help="true"
+fi
+
+if [[ "help" == "$1" || "help" == "$2" || "help" == "$3" || "-h" == "$1" || "-h" == "$2" || "-h" == "$3" ]]; then
+    help="true"
+fi
+
+if [[ ! -z "$help" ]]; then
+    echo "usqcd.sh"
+    echo "  Installer suite for USQCD and related packages."
+    echo "  Copyright (C) 2016  Evan Berkowitz"
+    echo ""
+    
+    echo "  Exactly 3 arguments are required MACHINE LIBRARY ACTION"
+    echo "  MACHINE is one of the files in the machine directory, without the .sh"
+    echo "  LIBRARY is one of the software packages specified in the STACK variable in the machine file."
+    echo "  ACTION  is one of"
+    echo "    report      Report information relevant to the LIBRARY."
+    echo "    get         Go get the package."
+    echo "    configure   Prepare to complile."
+    echo "    make        Compile."
+    echo "    install     Install."
+    echo "    complete    get, configure, make, and install."
+            
+    echo "  Instead of the three mandatory arguments, you can"
+    echo "    usqcd.sh help           to see this help information."
+    echo "    usqcd.sh license        to see licensing information."
+    
+    exit
 fi
 
 MACHINE=$1
@@ -210,7 +265,12 @@ case $ACTION in
         echo "              $($CXX --version | head -n 1)"
         echo "CXX_FLAGS     $(UNQUOTE ${CXX_FLAGS[$LIBRARY]})"
         echo ""
-        echo "HOST      $HOST"
+        echo "HOST          $HOST"
+        echo ""
+        for library in $(UNQUOTE $STACK); do
+        echo "$library      $(UNQUOTE ${INSTALL[$library]})" | awk '{printf("%-13s %s\n",$1,$2)}'
+        done
+        
         # echo "FFTW      $(UNQUOTE ${INSTALL[fftw]})"    #TODO: replace with a loop over the stack.
         # echo "HDF5      $(UNQUOTE ${INSTALL[hdf5]})"    #TODO: replace with a loop over the stack.
         

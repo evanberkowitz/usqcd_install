@@ -153,8 +153,7 @@ case $ACTION in
         echo "###"
         echo "### GETTING $LIBRARY"
         echo "###"
-        # echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/get.log"
-        # echo "$(UNQUOTE ${GET[$LIBRARY]})"
+        echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/get.log"
         eval "$(UNQUOTE ${GET[$LIBRARY]}) > $(UNQUOTE ${LOG[$LIBRARY]})/get.log 2>&1"
         ;;
     configure)
@@ -180,7 +179,7 @@ case $ACTION in
         echo "Autotools: $LIBRARY";
         echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$LIBRARY.log"
         pushd $(UNQUOTE ${SOURCE[$LIBRARY]})
-        eval "($AUTOTOOLS) > $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$LIBRARY.log 2>&1" #> "$(UNQUOTE ${LOG[$LIBRARY]})/autotools.$LIBRARY.log"
+        eval "($AUTOTOOLS) > $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$LIBRARY.log 2>&1"
         popd
         
         pushd $(UNQUOTE "${BUILD[$LIBRARY]}")
@@ -198,8 +197,10 @@ case $ACTION in
         echo "CFLAGS    $(UNQUOTE ${C_FLAGS[$LIBRARY]})"
         echo "CXXFLAGS  $(UNQUOTE ${CXX_FLAGS[$LIBRARY]})"
         echo "HOST      $HOST"
-        echo "FFTW      $(UNQUOTE ${INSTALL[fftw]})"    #TODO: replace with a loop over the stack.
-        echo "HDF5      $(UNQUOTE ${INSTALL[hdf5]})"    #TODO: replace with a loop over the stack.
+        for library in $(UNQUOTE $STACK); do
+        echo "$library      $(UNQUOTE ${INSTALL[$library]})" | awk '{printf("%-13s %s\n",$1,$2)}'
+        done
+        
         
         echo "================================================"
         
@@ -271,15 +272,11 @@ case $ACTION in
         echo "$library      $(UNQUOTE ${INSTALL[$library]})" | awk '{printf("%-13s %s\n",$1,$2)}'
         done
         
-        # echo "FFTW      $(UNQUOTE ${INSTALL[fftw]})"    #TODO: replace with a loop over the stack.
-        # echo "HDF5      $(UNQUOTE ${INSTALL[hdf5]})"    #TODO: replace with a loop over the stack.
-        
         echo "================================================"
         
         ;;
     complete)
         for action in get configure make install; do
-            #echo "$this_script $settings $LIB $action"
             $this_script $MACHINE $LIBRARY $action
             status=$?
             if [[ $status -ne 0 ]]; then

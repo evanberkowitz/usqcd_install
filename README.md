@@ -45,6 +45,22 @@ The other requirements are due to defaults---in principle you can configure your
 
 ### LICENSE
 
+I would really appreciate it if you would cite
+
+```
+@misc{berkowitz.usqcd.installer,
+  author = {Berkowitz, Evan},
+  title = {\texttt{usqcd_installer.sh}},
+  year = {2016},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/evanberkowitz/usqcd_install}},
+  commit = {...}
+}
+```
+
+or drop me an email / buy me a beer at a conference if these scripts made your life easier.  But, the license is GPLv3.0.
+
 ```
 usqcd.sh
     Installer suite for USQCD and related packages.

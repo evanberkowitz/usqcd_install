@@ -1,36 +1,26 @@
-BASE=/g/g14/berkowit/USQCD/aztec
-INSTALL=/p/lscratche/berkowit/USQCD/aztec
+BASE=/p/lscratche/berkowit/USQCD_TEST/aztec
+DIR[INSTALL]=/p/lscratche/berkowit/USQCD_TEST/aztec/install_foo
 GPUS=false
 
 # load dotkit
 . /usr/local/tools/dotkit/init.sh
 
 module purge
-use hdf5-gnu-parallel-mvapich2-1.8.16
-use mvapich2-gnu-2.2
+use hdf5-gnu-parallel-mvapich2-1.8.16    > /dev/null
+use mvapich2-gnu-2.2                     > /dev/null
 module load gnu/4.9.2
 module load fftw/3.2
 
 HOST=x86_64-linux-gnu
 
-HDF5=$HDF5
-FFTW=${FFTW_LIBS%/*}
+INSTALL[hdf5]=$HDF5
+INSTALL[fftw]=${FFTW_LIBS%/*}
+
+STACK="qmp libxml2 qdpxx chroma"
+
 CC=mpicc
 CXX=mpicxx
 
-QMP_BRANCH=master
-QDPXX_BRANCH=master
-CHROMA_BRANCH=master
-LIBXML2_BRANCH=v2.9.4
-
-CONFIG_QMP=""
-CONFIG_QDPXX=""
-CONFIG_QPHIX=""
-CONFIG_QUDA=""
-CONFIG_CHROMA="--enable-sse-scalarsite-bicgstab-kernels --enable-cpp-wilson-dslash --enable-sse2 --enable-sse3"
-
-OMPFLAGS="-fopenmp"
-OMPENABLE="--enable-openmp"
-CFLAGS=${OMPFLAGS}" -g -O2 -std=c99 -march=core2"
-CXXFLAGS=${OMPFLAGS}" -g -O2 -std=c++11 -march=core2"
-MAKE_JOBS=10
+C_FLAGS[DEFAULT]="-fopenmp -g -O2 -std=c99 -march=core2"
+CXX_FLAGS[DEFAULT]="-fopenmp -g -O2 -std=c++11 -march=core2"
+CONFIG_FLAGS[chroma]+=" --enable-sse-scalarsite-bicgstab-kernels --enable-sse2 --enable-sse3"

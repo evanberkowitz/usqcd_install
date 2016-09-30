@@ -91,7 +91,7 @@ case $ACTION in
         echo "###"
         # echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/get.log"
         # echo "$(UNQUOTE ${GET[$LIBRARY]})"
-        eval "$(UNQUOTE ${GET[$LIBRARY]})" # > $(UNQUOTE ${LOG[$LIBRARY]})/get.log
+        eval "$(UNQUOTE ${GET[$LIBRARY]}) > $(UNQUOTE ${LOG[$LIBRARY]})/get.log 2>&1"
         ;;
     configure)
         echo "###"
@@ -177,6 +177,35 @@ case $ACTION in
             echo ... failed; exit 1;
         fi
         popd
+        ;;
+    report)
+        echo "###"
+        echo "### REPORT ON $LIBRARY"
+        echo "###"
+        echo "================================================"
+        echo "SOURCE        $(UNQUOTE ${SOURCE[$LIBRARY]})"
+        echo "BUILD         $(UNQUOTE ${BUILD[$LIBRARY]})"
+        echo "INSTALL       $(UNQUOTE ${INSTALL[$LIBRARY]})"
+        echo "LOG           $(UNQUOTE ${LOG[$LIBRARY]})"
+        
+        echo "GET           $(UNQUOTE ${GET[$LIBRARY]})"
+        echo "CONFIGURE     $(UNQUOTE ${CONFIGURE[$LIBRARY]})"
+        echo "CONFIG_FLAGS  $(UNQUOTE ${CONFIG_FLAGS[$LIBRARY]})"
+        
+        echo "CC            $CC"
+        echo "              $($CC --version | head -n 1)"
+        echo "C_FLAGS       $(UNQUOTE ${C_FLAGS[$LIBRARY]})"
+        echo ""
+        echo "CXX           $CXX"
+        echo "              $($CXX --version | head -n 1)"
+        echo "CXX_FLAGS     $(UNQUOTE ${CXX_FLAGS[$LIBRARY]})"
+        echo ""
+        echo "HOST      $HOST"
+        # echo "FFTW      $(UNQUOTE ${INSTALL[fftw]})"    #TODO: replace with a loop over the stack.
+        # echo "HDF5      $(UNQUOTE ${INSTALL[hdf5]})"    #TODO: replace with a loop over the stack.
+        
+        echo "================================================"
+        
         ;;
     complete)
         for action in get configure make install; do

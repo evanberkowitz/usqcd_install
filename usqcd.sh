@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-if [[ ! $BASH_VERSINFO -gt 3 ]]; then
+if [[ ! ${BASH_VERSINFO[0]} -gt 3 ]]; then
     # Your preferred bash must have associative arrays, or LOTS of things will fail.
     # Practically speaking, this means you need bash version 4 or later.
     echo "bash version 4+ required."

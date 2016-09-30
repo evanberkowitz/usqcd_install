@@ -196,11 +196,12 @@ case $ACTION in
         echo "BUILD         $(UNQUOTE ${BUILD[$LIBRARY]})"
         echo "INSTALL       $(UNQUOTE ${INSTALL[$LIBRARY]})"
         echo "LOG           $(UNQUOTE ${LOG[$LIBRARY]})"
-        
+        echo ""
         echo "GET           $(UNQUOTE ${GET[$LIBRARY]})"
+        echo ""
         echo "CONFIGURE     $(UNQUOTE ${CONFIGURE[$LIBRARY]})"
         echo "CONFIG_FLAGS  $(UNQUOTE ${CONFIG_FLAGS[$LIBRARY]})"
-        
+        echo ""
         echo "CC            $CC"
         echo "              $($CC --version | head -n 1)"
         echo "C_FLAGS       $(UNQUOTE ${C_FLAGS[$LIBRARY]})"

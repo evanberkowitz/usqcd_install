@@ -25,6 +25,8 @@ This makes it easy to alter the path to, compilation settings for, etc., just on
 - [`usqcd_install`](#usqcd_install)
 - [Table of Contents](#table-of-contents)
 - [Requirements](#requirements)
+- [Machine files](#machine-files)
+- [Configurable Variables](#configurable-variables)
 - [License](#license)
 
 

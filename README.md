@@ -20,6 +20,14 @@ ACTION  is one of
 There are variables for many imaginable user options that default to values specified in `machine/default.sh`.
 This makes it easy to alter the path to, compilation settings for, etc., just one of the libraries or them all at once.
 
+### Table of Contents
+
+- [`usqcd_install`](#usqcd_install)
+- [Table of Contents](#table-of-contents)
+- [Requirements](#requirements)
+- [License](#license)
+
+
 ### Requirements
 
 The requirements are very basic:

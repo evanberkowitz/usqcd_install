@@ -11,8 +11,9 @@ MACHINE=$1
 LIBRARY=$2
 ACTION=$3
 
-this_script=$0
-script_folder=${this_script%/*}
+script_folder=$(unset CDPATH && cd "$(dirname "$0")" && echo $PWD)
+this_script=${script_folder}/usqcd.sh
+
 source ${script_folder}/machines/$MACHINE.sh    # Read the user options, as some are needed for
 source ${script_folder}/machines/default.sh     # the default settings
 source ${script_folder}/machines/$MACHINE.sh    # after which, the user can over-ride the defaults

@@ -95,7 +95,7 @@ case $ACTION in
         ;;
     configure)
         echo "###"
-        echo "### CONFIGURING $LIBRARY"
+        echo "### AUTOTOOLS $LIBRARY"
         echo "###"
         
         if [[ "quda" == "$LIBRARY" ]]; then
@@ -105,22 +105,25 @@ case $ACTION in
         for olib in $(UNQUOTE ${OTHER_LIBS[$LIBRARY]}); do
             if [[ ! -d "$(UNQUOTE ${SOURCE[$LIBRARY]}/$olib)" ]]; then continue; fi
             echo "Autotools: $olib"
-            # echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$olib.log"
-            # echo "$(UNQUOTE ${SOURCE[$LIBRARY]}/$olib)"
-            (pushd $(UNQUOTE ${SOURCE[$LIBRARY]}/$olib); eval "$AUTOTOOLS"; popd) #> "$(UNQUOTE ${LOG[$LIBRARY]})/autotools.$olib.log";
-        done
+            sanitized=${olib##*/}
+            echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$sanitized.log"
+            pushd $(UNQUOTE ${SOURCE[$LIBRARY]}/$olib)
+            eval "($AUTOTOOLS) > $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$sanitized.log 2>&1"
+            popd
+
+        done 
         
         echo "Autotools: $LIBRARY";
-        # echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$LIBRARY.log"
-        (
+        echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$LIBRARY.log"
         pushd $(UNQUOTE ${SOURCE[$LIBRARY]})
-        eval "$AUTOTOOLS" #> "$(UNQUOTE ${LOG[$LIBRARY]})/autotools.$LIBRARY.log"
+        eval "($AUTOTOOLS) > $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$LIBRARY.log 2>&1" #> "$(UNQUOTE ${LOG[$LIBRARY]})/autotools.$LIBRARY.log"
         popd
-        ) 
         
         pushd $(UNQUOTE "${BUILD[$LIBRARY]}")
 
-        echo "Configuring $LIB"
+        echo "###"
+        echo "### CONFIGURING $LIBRARY"
+        echo "###"
 
         echo "================================================"
         
@@ -137,8 +140,9 @@ case $ACTION in
         echo "================================================"
         
         echo "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}")"
+        echo ""
         echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/configure.log"
-        eval "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}")" > "$(UNQUOTE ${LOG[$LIBRARY]})/configure.log"
+        eval "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}") > $(UNQUOTE ${LOG[$LIBRARY]})/configure.log 2>&1" 
         if [[ $status -ne 0 ]]; then
             echo ... failed; exit 1;
         fi

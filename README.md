@@ -41,6 +41,14 @@ The other requirements are due to defaults---in principle you can configure your
 - `make`: For compiling!
 - `cmake`: (soon!) for configuring QUDA.
 
+### Machine files
+
+A machine file is a file that lives in the `machine` directory of this repo.  It is where you specify what kind of software stack you want to compile, and what settings are needed.
+
+Machine files are welcome!  I'm happy to accept pull requests, so as to build up successful scripts for as many machines as possible.  That makes this script more and more useful.
+
+### Configurable Variables
+
 
 
 ### LICENSE

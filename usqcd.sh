@@ -71,6 +71,7 @@ fi
 for folder in SOURCE BUILD INSTALL LOG; do
     mkdir -p $(UNQUOTE "${DIR[$folder]}")
 done
+cp ${script_folder}/machines/$MACHINE.sh ${DIR[INSTALL]}
 for folder in BUILD INSTALL LOG; do
     mkdir -p $(UNQUOTE "\${$folder[$LIBRARY]}")
 done

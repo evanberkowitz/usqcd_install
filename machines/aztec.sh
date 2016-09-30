@@ -1,5 +1,4 @@
-BASE=/p/lscratche/berkowit/USQCD_TEST/aztec
-DIR[INSTALL]=/p/lscratche/berkowit/USQCD_TEST/aztec/install_foo
+BASE=/p/lscratchd/berkowit/software/aztec/USQCD
 GPUS=false
 
 # load dotkit
@@ -13,6 +12,8 @@ module load fftw/3.2
 
 HOST=x86_64-linux-gnu
 
+
+GET[libxml2]='curl ftp://xmlsoft.org/libxml2/libxml2-2.9.4.tar.gz -o ${SOURCE[$LIBRARY]%/*}/libxml2-2.9.4.tar.gz; pushd ${SOURCE[$LIBRARY]%/*}; tar -xzf libxml2-2.9.4.tar.gz; mv libxml2-2.9.4 ${SOURCE[$LIBRARY]}; popd;'
 INSTALL[hdf5]=$HDF5
 INSTALL[fftw]=${FFTW_LIBS%/*}
 

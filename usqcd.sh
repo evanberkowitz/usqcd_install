@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 # Installer suite for USQCD and related packages.
 # Copyright (C) 2016  Evan Berkowitz
 
@@ -101,9 +101,21 @@ function PROMPT_USER {
     echo $response
 }
 
-if [[ "all" == "$LIBRARY" ]]; then
+function DELETE_FOLDER {
+    target="$1"
+    if [[ "/" != "$target" ]]; then
+        rm -rf "$target"
+    else
+        echo "Come on now... you don't really want to rm -rf /, right?"
+        exit -1;
+    fi
+    
+}
+
+if [[ "stack" == "$LIBRARY" ]]; then
     for library in $(UNQUOTE $STACK); do
         $this_script $MACHINE $library $ACTION
+        status=$?
         if [[ $status -ne 0 ]]; then
             echo ... failed; exit 1;
         fi
@@ -139,12 +151,7 @@ case $ACTION in
             echo "Directory exists: $(UNQUOTE ${SOURCE[$LIBRARY]})"
             overwrite=$(PROMPT_USER "Overwrite?" "NO")
             if [[ "$overwrite" =~ ^[yY]*$ ]]; then
-                if [[ "/" != "$(UNQUOTE ${SOURCE[$LIBRARY]})" ]]; then
-                    rm -rf "$(UNQUOTE ${SOURCE[$LIBRARY]})"
-                else
-                    echo "Come on now... you don't really want to rm -rf /, right?"
-                    exit -1;
-                fi
+                DELETE_FOLDER "$(UNQUOTE ${SOURCE[$LIBRARY]})"
             else
                 echo "OK, not overwriting existing source directory."
                 exit;
@@ -160,11 +167,7 @@ case $ACTION in
         echo "###"
         echo "### AUTOTOOLS $LIBRARY"
         echo "###"
-        
-        if [[ "quda" == "$LIBRARY" ]]; then
-            echo "QUDA is annoying"; return;
-        fi
-        
+
         for olib in $(UNQUOTE ${OTHER_LIBS[$LIBRARY]}); do
             if [[ ! -d "$(UNQUOTE ${SOURCE[$LIBRARY]}/$olib)" ]]; then continue; fi
             echo "Autotools: $olib"
@@ -174,14 +177,14 @@ case $ACTION in
             eval "($AUTOTOOLS) > $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$sanitized.log 2>&1"
             popd
 
-        done 
-        
+        done
+
         echo "Autotools: $LIBRARY";
         echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$LIBRARY.log"
         pushd $(UNQUOTE ${SOURCE[$LIBRARY]})
         eval "($AUTOTOOLS) > $(UNQUOTE ${LOG[$LIBRARY]})/autotools.$LIBRARY.log 2>&1"
         popd
-        
+
         pushd $(UNQUOTE "${BUILD[$LIBRARY]}")
 
         echo "###"
@@ -202,12 +205,14 @@ case $ACTION in
         done
         
         
-        echo "================================================"
+        echo "================================================" #
         
-        echo "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}")"
+        # Add QUDA_LIBS=\"-lquda -lcudart -lcuda\"  ?
+        echo "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" QUDA_LIBS=\"$(UNQUOTE "${QUDA_LIBS[$LIBRARY]}")\" LDFLAGS=\"$(UNQUOTE "${LD_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}")"
         echo ""
         echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/configure.log"
-        eval "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}") > $(UNQUOTE ${LOG[$LIBRARY]})/configure.log 2>&1" 
+        eval "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" QUDA_LIBS=\"$(UNQUOTE "${QUDA_LIBS[$LIBRARY]}")\" LDFLAGS=\"$(UNQUOTE "${LD_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}") > $(UNQUOTE ${LOG[$LIBRARY]})/configure.log 2>&1" 
+        status=$?
         if [[ $status -ne 0 ]]; then
             echo ... failed; exit 1;
         fi
@@ -222,6 +227,7 @@ case $ACTION in
         pushd $(UNQUOTE "${BUILD[$LIBRARY]}")
         MAKE_LOG="$(UNQUOTE ${LOG[$LIBRARY]})/make.log"
         $MAKE > $MAKE_LOG 2>&1
+        status=$?
         if [[ $status -ne 0 ]]; then
             echo ... failed; exit 1;
         fi
@@ -238,6 +244,7 @@ case $ACTION in
         echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/install.log"
         pushd $(UNQUOTE "${BUILD[$LIBRARY]}")
         $MAKE install > "$(UNQUOTE ${LOG[$LIBRARY]})/install.log" 2>&1
+        status=$?
         if [[ $status -ne 0 ]]; then
             echo ... failed; exit 1;
         fi
@@ -272,6 +279,8 @@ case $ACTION in
         echo "$library      $(UNQUOTE ${INSTALL[$library]})" | awk '{printf("%-13s %s\n",$1,$2)}'
         done
         
+        echo ""
+        echo "LD_LIBRARY_PATH   ${LD_LIBRARY_PATH}"
         echo "================================================"
         
         ;;
@@ -280,7 +289,17 @@ case $ACTION in
             $this_script $MACHINE $LIBRARY $action
             status=$?
             if [[ $status -ne 0 ]]; then
-                echo ... failed; exit 1;
+                exit 1;
+            fi
+        done ;
+        exit ;;
+    clean)
+        for dir in INSTALL BUILD SOURCE; do
+            target="$dir[$LIBRARY]"
+            target="$(UNQUOTE "\${${target}}")"
+            remove=$(PROMPT_USER "Remove $target" "N")
+            if [[ "$remove" =~ [yY].* ]]; then 
+                DELETE_FOLDER $target; 
             fi
         done ;
         exit ;;

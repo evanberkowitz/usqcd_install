@@ -1,4 +1,5 @@
 LIBS=("qmp" "libxml2" "hdf5" "fftw" "qdpxx" "quda" "qphix" "chroma")
+GPU_ARCH=sm_35
 
 unset DIR
 declare -A DIR
@@ -18,10 +19,10 @@ GET[qmp]='${GIT_CLONE} git@github.com:usqcd-software/qmp.git ${SOURCE[$LIBRARY]}
 GET[libxml2]='${GIT_CLONE} git://git.gnome.org/libxml2 ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout v2.9.4; popd'
 GET[hdf5]='curl https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.17.tar -o ${SOURCE[$LIBRARY]%/*}/hdf5-1.8.17.tar; pushd; tar -xzf ${SOURCE[$LIBRARY]%/*}/hdf5-1.8.17.tar; popd;'
 GET[fftw]='${GIT_CLONE} git@github.com:FFTW/fftw3.git ${SOURCE[$LIBRARY]}; '
-GET[qdpxx]='${GIT_CLONE} git@github.com:azrael417/qdpxx.git ${SOURCE[$LIBRARY]}; ${GIT_UPDATE_SUBMODULES}; '
-GET[quda]='${GIT_CLONE} git@github.com:lattice/quda.git ${SOURCE[$LIBRARY]};'
+GET[qdpxx]='${GIT_CLONE} git@github.com:azrael417/qdpxx.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout devel; ${GIT_UPDATE_SUBMODULES}; '
+GET[quda]='${GIT_CLONE} git@github.com:lattice/quda.git ${SOURCE[$LIBRARY]}; git checkout devel; ${GIT_UPDATE_SUBMODULES}; '
 GET[qphix]='${GIT_CLONE} git@github.com:JeffersonLab/qphix.git ${SOURCE[$LIBRARY]};'
-GET[chroma]='${GIT_CLONE} git@github.com:JeffersonLab/chroma.git ${SOURCE[$LIBRARY]}; ${GIT_UPDATE_SUBMODULES}; '
+GET[chroma]='${GIT_CLONE} git@github.com:JeffersonLab/chroma.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout devel; ${GIT_UPDATE_SUBMODULES}; '
 
 unset SOURCE
 declare -A SOURCE
@@ -43,7 +44,7 @@ BUILD[libxml2]='${DIR[BUILD]}/libxml2'
 BUILD[hdf5]='${DIR[BUILD]}/hdf5'
 BUILD[fftw]='${DIR[BUILD]}/fftw'
 BUILD[qdpxx]='${DIR[BUILD]}/qdpxx'
-BUILD[quda]='${DIR[BUILD]}/quda'
+BUILD[quda]='${DIR[INSTALL]}/quda'  # I know this looks wrong, but the current cmake build system just wants you to build in the install directory.
 BUILD[qphix]='${DIR[BUILD]}/qphix'
 BUILD[chroma]='${DIR[BUILD]}/chroma'
 
@@ -83,6 +84,19 @@ OTHER_LIBS[quda]=""
 OTHER_LIBS[qphix]=""
 OTHER_LIBS[chroma]="other_libs/cg-dwf other_libs/cpp_wilson_dslash other_libs/qdp-lapack other_libs/sse_wilson_dslash other_libs/wilsonmg"
 
+unset CONFIG_ENV
+declare -A CONFIG_ENV
+
+CONFIG_ENV[qmp]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
+CONFIG_ENV[libxml2]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
+CONFIG_ENV[hdf5]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
+CONFIG_ENV[fftw]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
+CONFIG_ENV[qdpxx]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
+CONFIG_ENV[quda]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
+CONFIG_ENV[qphix]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
+CONFIG_ENV[chroma]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" QUDA_LIBS="-lquda -lcudart -lcuda" LDFLAGS="-Wl,-zmuldefs"'
+
+
 unset CONFIGURE
 declare -A CONFIGURE
 
@@ -91,7 +105,7 @@ CONFIGURE[libxml2]='${SOURCE[libxml2]}/configure '
 CONFIGURE[hdf5]='${SOURCE[hdf5]}/configure '
 CONFIGURE[fftw]='${SOURCE[fftw]}/configure '
 CONFIGURE[qdpxx]='${SOURCE[qdpxx]}/configure '
-CONFIGURE[quda]='echo "NEED TO DO SOMETHING WITH CMAKE FOR quda"'
+CONFIGURE[quda]='cmake ${SOURCE[quda]} '
 CONFIGURE[qphix]='echo "I do not understand QPhiX"'
 CONFIGURE[chroma]='${SOURCE[chroma]}/configure '
 
@@ -103,7 +117,7 @@ CONFIG_FLAGS[libxml2]='--prefix=${INSTALL[libxml2]}  --disable-shared  --without
 CONFIG_FLAGS[hdf5]='--prefix=${INSTALL[hdf5]} '
 CONFIG_FLAGS[fftw]='--prefix=${INSTALL[fftw]} '
 CONFIG_FLAGS[qdpxx]='--prefix=${INSTALL[qdpxx]} --with-qmp=${INSTALL[qmp]} --with-libxml2=${INSTALL[libxml2]} --with-hdf5=${INSTALL[hdf5]} --enable-openmp --enable-precision=double --enable-largefile --enable-parallel-io --enable-db-lite --enable-parallel-arch=parscalar'
-CONFIG_FLAGS[quda]='--prefix=${INSTALL[quda]} '
+CONFIG_FLAGS[quda]='-DQUDA_GPU_ARCH=${GPU_ARCH} -DQUDA_MPI=ON -DQUDA_QMP=ON -DQUDA_QMPHOME=${INSTALL[qmp]} -DMPI_C_COMPILER=${CC} -DMPI_CXX_COMPILER=${CXX} -DQUDA_DIRAC_WILSON=ON -DQUDA_DIRAC_DOMAIN_WALL=ON ' # -DQUDA_DIRAC_TWISTED_MASS=OFF  -DQUDA_LINK_HISQ=OFF -DQUDA_FORCE_GAUGE=OFF -DQUDA_FORCE_HISQ=OFF
 CONFIG_FLAGS[qphix]='--prefix=${INSTALL[qphix]} '
 CONFIG_FLAGS[chroma]='--prefix=${INSTALL[chroma]} --with-qmp=${INSTALL[qmp]} --with-qdp=${INSTALL[qdpxx]} --enable-openmp --enable-cpp-wilson-dslash'
 
@@ -131,6 +145,33 @@ C_FLAGS[quda]='${C_FLAGS[DEFAULT]}'
 C_FLAGS[qphix]='${C_FLAGS[DEFAULT]}'
 C_FLAGS[chroma]='${C_FLAGS[DEFAULT]}'
 
+unset QUDA_LIBS
+declare -A QUDA_LIBS
+QUDA_LIBS[qmp]='${QUDA_LIBS[DEFAULT]}'
+QUDA_LIBS[libxml2]='${QUDA_LIBS[DEFAULT]}'
+QUDA_LIBS[hdf5]='${QUDA_LIBS[DEFAULT]}'
+QUDA_LIBS[fftw]='${QUDA_LIBS[DEFAULT]}'
+QUDA_LIBS[qdpxx]='${QUDA_LIBS[DEFAULT]}'
+QUDA_LIBS[quda]='${QUDA_LIBS[DEFAULT]}'
+QUDA_LIBS[qphix]='${QUDA_LIBS[DEFAULT]}'
+QUDA_LIBS[chroma]='-lquda -lcudart -lcuda'
+
+unset LD_FLAGS
+declare -A LD_FLAGS
+
+LD_FLAGS[qmp]='${LD_FLAGS[DEFAULT]}'
+LD_FLAGS[libxml2]='${LD_FLAGS[DEFAULT]}'
+LD_FLAGS[hdf5]='${LD_FLAGS[DEFAULT]}'
+LD_FLAGS[fftw]='${LD_FLAGS[DEFAULT]}'
+LD_FLAGS[qdpxx]='${LD_FLAGS[DEFAULT]}'
+LD_FLAGS[quda]='${LD_FLAGS[DEFAULT]}'
+LD_FLAGS[qphix]='${LD_FLAGS[DEFAULT]}'
+LD_FLAGS[chroma]='${LD_FLAGS[DEFAULT]} -Wl,-zmuldefs'
+
+
+
+
+
 unset LIBTOOL AUTOHEADER ACLOCAL AUTOMAKE AUTOCONF AUTORECONF AUTOTOOLS MAKE
 LIBTOOL="libtoolize"
 AUTOHEADER="autoheader"
@@ -139,4 +180,4 @@ AUTOMAKE="automake --add-missing"
 AUTOCONF="autoconf"
 AUTORECONF="autoreconf -f"
 AUTOTOOLS='touch ChangeLog; $LIBTOOLIZE; $AUTOHEADER ; $ACLOCAL ; $AUTOMAKE; $AUTOMAKE; $AUTOCONF ; $AUTORECONF; $LIBTOOLIZE; $AUTOHEADER ; $ACLOCAL ; $AUTOMAKE; $AUTOMAKE; $AUTOCONF ; $AUTORECONF'
-MAKE="make -j 10"
+MAKE="make -j 10 "

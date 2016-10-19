@@ -1,4 +1,4 @@
-BASE=/p/lscratchd/berkowit/software/surface/USQCD
+BASE=/nfs/tmp2/lattice_qcd/surface/USQCD
 GPUS=1
 
 # load dotkit

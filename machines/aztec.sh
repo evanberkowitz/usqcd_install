@@ -1,4 +1,4 @@
-BASE=/p/lscratchd/berkowit/software/aztec/USQCD
+BASE=/nfs/tmp2/lattice_qcd/aztec/USQCD
 GPUS=false
 
 # load dotkit

@@ -16,7 +16,8 @@ GIT_UPDATE_SUBMODULES="git submodule update --init --recursive"
 #GIT_UPDATE_SUBMODULES="echo FOOBAR"
 
 GET[qmp]='${GIT_CLONE} git@github.com:usqcd-software/qmp.git ${SOURCE[$LIBRARY]}; '
-GET[libxml2]='${GIT_CLONE} git://git.gnome.org/libxml2 ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout v2.9.4; popd'
+#GET[libxml2]='${GIT_CLONE} git://git.gnome.org/libxml2 ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout v2.9.4; popd' # doesn't autotools and configure properly.
+GET[libxml2]='curl ftp://xmlsoft.org/libxml2/libxml2-2.9.4.tar.gz -o ${SOURCE[$LIBRARY]%/*}/libxml2-2.9.4.tar.gz; pushd ${SOURCE[$LIBRARY]%/*}; tar -xzf libxml2-2.9.4.tar.gz; mv libxml2-2.9.4 ${SOURCE[$LIBRARY]}; popd;'
 GET[hdf5]='curl https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.17.tar -o ${SOURCE[$LIBRARY]%/*}/hdf5-1.8.17.tar; pushd; tar -xzf ${SOURCE[$LIBRARY]%/*}/hdf5-1.8.17.tar; popd;'
 GET[fftw]='${GIT_CLONE} git@github.com:FFTW/fftw3.git ${SOURCE[$LIBRARY]}; '
 GET[qdpxx]='${GIT_CLONE} git@github.com:azrael417/qdpxx.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout devel; ${GIT_UPDATE_SUBMODULES}; '

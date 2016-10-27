@@ -1,5 +1,4 @@
 LIBS=("qmp" "libxml2" "hdf5" "fftw" "qdpxx" "quda" "qphix" "chroma")
-GPU_ARCH=sm_35
 
 unset DIR
 declare -A DIR
@@ -161,6 +160,10 @@ C_FLAGS[chroma]='${C_FLAGS[DEFAULT]}'
 
 unset QUDA_LIBS
 declare -A QUDA_LIBS
+if [[ ! -z "$GPUS" ]]; then
+    GPU_ARCH=sm_35
+    QUDA_LIBS[DEFAULT]='-lquda -lcudart -lcuda'
+fi
 QUDA_LIBS[qmp]='${QUDA_LIBS[DEFAULT]}'
 QUDA_LIBS[libxml2]='${QUDA_LIBS[DEFAULT]}'
 QUDA_LIBS[hdf5]='${QUDA_LIBS[DEFAULT]}'
@@ -168,7 +171,7 @@ QUDA_LIBS[fftw]='${QUDA_LIBS[DEFAULT]}'
 QUDA_LIBS[qdpxx]='${QUDA_LIBS[DEFAULT]}'
 QUDA_LIBS[quda]='${QUDA_LIBS[DEFAULT]}'
 QUDA_LIBS[qphix]='${QUDA_LIBS[DEFAULT]}'
-QUDA_LIBS[chroma]='-lquda -lcudart -lcuda'
+QUDA_LIBS[chroma]='${QUDA_LIBS[DEFAULT]}'
 
 unset LD_FLAGS
 declare -A LD_FLAGS

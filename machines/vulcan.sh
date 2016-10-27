@@ -1,5 +1,4 @@
 BASE=/nfs/tmp2/lattice_qcd/vulcan/USQCD
-GPUS=false
 
 # load dotkit
 . /usr/local/tools/dotkit/init.sh

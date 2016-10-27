@@ -16,14 +16,27 @@ GIT_UPDATE_SUBMODULES="git submodule update --init --recursive"
 #GIT_UPDATE_SUBMODULES="echo FOOBAR"
 
 GET[qmp]='${GIT_CLONE} git@github.com:usqcd-software/qmp.git ${SOURCE[$LIBRARY]}; '
-#GET[libxml2]='${GIT_CLONE} git://git.gnome.org/libxml2 ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout v2.9.4; popd' # doesn't autotools and configure properly.
+# GET[libxml2]='${GIT_CLONE} git://git.gnome.org/libxml2 ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout v2.9.4; popd' # doesn't autotools and configure properly.
 GET[libxml2]='curl ftp://xmlsoft.org/libxml2/libxml2-2.9.4.tar.gz -o ${SOURCE[$LIBRARY]%/*}/libxml2-2.9.4.tar.gz; pushd ${SOURCE[$LIBRARY]%/*}; tar -xzf libxml2-2.9.4.tar.gz; mv libxml2-2.9.4 ${SOURCE[$LIBRARY]}; popd;'
 GET[hdf5]='curl https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.17.tar -o ${SOURCE[$LIBRARY]%/*}/hdf5-1.8.17.tar; pushd; tar -xzf ${SOURCE[$LIBRARY]%/*}/hdf5-1.8.17.tar; popd;'
 GET[fftw]='${GIT_CLONE} git@github.com:FFTW/fftw3.git ${SOURCE[$LIBRARY]}; '
-GET[qdpxx]='${GIT_CLONE} git@github.com:azrael417/qdpxx.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout devel; ${GIT_UPDATE_SUBMODULES}; '
-GET[quda]='${GIT_CLONE} git@github.com:lattice/quda.git ${SOURCE[$LIBRARY]}; git checkout devel; ${GIT_UPDATE_SUBMODULES}; '
-GET[qphix]='${GIT_CLONE} git@github.com:JeffersonLab/qphix.git ${SOURCE[$LIBRARY]};'
+GET[qdpxx]='${GIT_CLONE} git@github.com:azrael417/qdpxx.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[qdpxx]}; ${GIT_UPDATE_SUBMODULES}; '
+GET[quda]='${GIT_CLONE} git@github.com:lattice/quda.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[quda]}; ${GIT_UPDATE_SUBMODULES}; '
+GET[qphix]='${GIT_CLONE} git@github.com:JeffersonLab/qphix.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[qphix]}; ${GIT_UPDATE_SUBMODULES}; '
 GET[chroma]='${GIT_CLONE} git@github.com:JeffersonLab/chroma.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout devel; ${GIT_UPDATE_SUBMODULES}; '
+
+unset GIT_BRANCH
+declare -A GIT_BRANCH
+
+GIT_BRANCH[qmp]="master"
+GIT_BRANCH[libxml2]="v2.9.4"
+GIT_BRANCH[hdf5]=""
+GIT_BRANCH[fftw]="master"
+GIT_BRANCH[qdpxx]="devel"
+GIT_BRANCH[quda]="devel"
+GIT_BRANCH[qphix]="devel"
+GIT_BRANCH[chroma]="devel"
+
 
 unset SOURCE
 declare -A SOURCE
@@ -85,17 +98,17 @@ OTHER_LIBS[quda]=""
 OTHER_LIBS[qphix]=""
 OTHER_LIBS[chroma]="other_libs/cg-dwf other_libs/cpp_wilson_dslash other_libs/qdp-lapack other_libs/sse_wilson_dslash other_libs/wilsonmg"
 
-unset CONFIG_ENV
-declare -A CONFIG_ENV
+unset LIBS
+declare -A LIBS
 
-CONFIG_ENV[qmp]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
-CONFIG_ENV[libxml2]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
-CONFIG_ENV[hdf5]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
-CONFIG_ENV[fftw]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
-CONFIG_ENV[qdpxx]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
-CONFIG_ENV[quda]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
-CONFIG_ENV[qphix]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\"'
-CONFIG_ENV[chroma]='CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" QUDA_LIBS="-lquda -lcudart -lcuda" LDFLAGS="-Wl,-zmuldefs"'
+LIBS[qmp]='${LIBS[DEFAULT]}'
+LIBS[libxml2]='${LIBS[DEFAULT]}'
+LIBS[hdf5]='${LIBS[DEFAULT]}'
+LIBS[fftw]='${LIBS[DEFAULT]}'
+LIBS[qdpxx]='${LIBS[DEFAULT]}'
+LIBS[quda]='${LIBS[DEFAULT]}'
+LIBS[qphix]='${LIBS[DEFAULT]}'
+LIBS[chroma]='${LIBS[DEFAULT]}'
 
 
 unset CONFIGURE
@@ -107,7 +120,7 @@ CONFIGURE[hdf5]='${SOURCE[hdf5]}/configure '
 CONFIGURE[fftw]='${SOURCE[fftw]}/configure '
 CONFIGURE[qdpxx]='${SOURCE[qdpxx]}/configure '
 CONFIGURE[quda]='cmake ${SOURCE[quda]} '
-CONFIGURE[qphix]='echo "I do not understand QPhiX"'
+CONFIGURE[qphix]='${SOURCE[qphix]}/configure'
 CONFIGURE[chroma]='${SOURCE[chroma]}/configure '
 
 unset CONFIG_FLAGS
@@ -119,8 +132,8 @@ CONFIG_FLAGS[hdf5]='--prefix=${INSTALL[hdf5]} '
 CONFIG_FLAGS[fftw]='--prefix=${INSTALL[fftw]} '
 CONFIG_FLAGS[qdpxx]='--prefix=${INSTALL[qdpxx]} --with-qmp=${INSTALL[qmp]} --with-libxml2=${INSTALL[libxml2]} --with-hdf5=${INSTALL[hdf5]} --enable-openmp --enable-precision=double --enable-largefile --enable-parallel-io --enable-db-lite --enable-parallel-arch=parscalar'
 CONFIG_FLAGS[quda]='-DQUDA_GPU_ARCH=${GPU_ARCH} -DQUDA_MPI=ON -DQUDA_QMP=ON -DQUDA_QMPHOME=${INSTALL[qmp]} -DMPI_C_COMPILER=${CC} -DMPI_CXX_COMPILER=${CXX} -DQUDA_DIRAC_WILSON=ON -DQUDA_DIRAC_DOMAIN_WALL=ON ' # -DQUDA_DIRAC_TWISTED_MASS=OFF  -DQUDA_LINK_HISQ=OFF -DQUDA_FORCE_GAUGE=OFF -DQUDA_FORCE_HISQ=OFF
-CONFIG_FLAGS[qphix]='--prefix=${INSTALL[qphix]} '
-CONFIG_FLAGS[chroma]='--prefix=${INSTALL[chroma]} --with-qmp=${INSTALL[qmp]} --with-qdp=${INSTALL[qdpxx]} --enable-openmp --enable-cpp-wilson-dslash'
+CONFIG_FLAGS[qphix]='--prefix=${INSTALL[qphix]}   --with-qmp=${INSTALL[qmp]} --enable-parallel-arch=parscalar --disable-mm-malloc ' # --with-qdp and --with-qdp++ seem to fail.
+CONFIG_FLAGS[chroma]='--prefix=${INSTALL[chroma]} --with-qmp=${INSTALL[qmp]} --with-qdp=${INSTALL[qdpxx]} --enable-openmp '
 
 unset CXX_FLAGS
 declare -A CXX_FLAGS

@@ -24,4 +24,4 @@ CXX=mpicxx
 
 C_FLAGS[DEFAULT]="-fopenmp -g -O2 -std=c99 -march=core2"
 CXX_FLAGS[DEFAULT]="-fopenmp -g -O2 -std=c++11 -march=core2"
-CONFIG_FLAGS[chroma]+=" --enable-sse-scalarsite-bicgstab-kernels --enable-sse2 --enable-sse3"
+CONFIG_FLAGS[chroma]+=" --enable-cpp-wilson-dslash --enable-sse-scalarsite-bicgstab-kernels --enable-sse2 --enable-sse3"

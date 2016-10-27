@@ -69,18 +69,6 @@ ACTION=$3
 script_folder=$(unset CDPATH && cd "$(dirname "$0")" && echo $PWD)
 this_script=${script_folder}/usqcd.sh
 
-source ${script_folder}/machines/$MACHINE.sh    # Read the user options, as some are needed for
-source ${script_folder}/machines/default.sh     # the default settings
-source ${script_folder}/machines/$MACHINE.sh    # after which, the user can over-ride the defaults
-
-pushd () {
-    command pushd "$@" > /dev/null
-}
-
-popd () {
-    command popd "$@" > /dev/null
-}
-
 function UNQUOTE {
     s="$*"
     while [[ "$s" != "$(eval echo \"$s\")" ]]; do
@@ -111,6 +99,18 @@ function DELETE_FOLDER {
     fi
     
 }
+
+pushd () {
+    command pushd "$@" > /dev/null
+}
+
+popd () {
+    command popd "$@" > /dev/null
+}
+
+source ${script_folder}/machines/$MACHINE.sh    # Read the user options, as some are needed for
+source ${script_folder}/machines/default.sh     # the default settings
+source ${script_folder}/machines/$MACHINE.sh    # after which, the user can over-ride the defaults
 
 if [[ "stack" == "$LIBRARY" ]]; then
     for library in $(UNQUOTE $STACK); do
@@ -208,10 +208,10 @@ case $ACTION in
         echo "================================================" #
         
         # Add QUDA_LIBS=\"-lquda -lcudart -lcuda\"  ?
-        echo "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" QUDA_LIBS=\"$(UNQUOTE "${QUDA_LIBS[$LIBRARY]}")\" LDFLAGS=\"$(UNQUOTE "${LD_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}")"
+        echo "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" LIBS=\"$(UNQUOTE "${LIBS[$LIBRARY]}")\" QUDA_LIBS=\"$(UNQUOTE "${QUDA_LIBS[$LIBRARY]}")\" LDFLAGS=\"$(UNQUOTE "${LD_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}")"
         echo ""
         echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/configure.log"
-        eval "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" QUDA_LIBS=\"$(UNQUOTE "${QUDA_LIBS[$LIBRARY]}")\" LDFLAGS=\"$(UNQUOTE "${LD_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}") > $(UNQUOTE ${LOG[$LIBRARY]})/configure.log 2>&1" 
+        eval "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" LIBS=\"$(UNQUOTE "${LIBS[$LIBRARY]}")\" QUDA_LIBS=\"$(UNQUOTE "${QUDA_LIBS[$LIBRARY]}")\" LDFLAGS=\"$(UNQUOTE "${LD_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}") > $(UNQUOTE ${LOG[$LIBRARY]})/configure.log 2>&1" 
         status=$?
         if [[ $status -ne 0 ]]; then
             echo ... failed; exit 1;

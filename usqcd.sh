@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 # Installer suite for USQCD and related packages.
 # Copyright (C) 2016  Evan Berkowitz
 
@@ -138,9 +138,12 @@ fi
 for folder in SOURCE BUILD INSTALL LOG; do
     mkdir -p $(UNQUOTE "${DIR[$folder]}")
 done
-if [[ ! -f "$(UNQUOTE ${DIR[INSTALL]})/$MACHINE.sh" ]]; then
+
+if [[ "report" != "$ACTION" ]]; then
+    # Put the machine file in the installation directory.
     eval "cp ${script_folder}/machines/$MACHINE.sh $(UNQUOTE ${DIR[INSTALL]})"
 fi
+
 for folder in BUILD INSTALL LOG; do
     mkdir -p $(UNQUOTE "\${$folder[$LIBRARY]}")
 done

@@ -20,11 +20,11 @@ GET[libxml2]='curl ftp://xmlsoft.org/libxml2/libxml2-2.9.4.tar.gz -o ${SOURCE[$L
 GET[hdf5]='curl https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.17.tar -o ${SOURCE[$LIBRARY]%/*}/hdf5-1.8.17.tar; pushd; tar -xzf ${SOURCE[$LIBRARY]%/*}/hdf5-1.8.17.tar; popd;'
 GET[fftw]='${GIT_CLONE} git@github.com:FFTW/fftw3.git ${SOURCE[$LIBRARY]}; '
 GET[qdpxx]='${GIT_CLONE} git@github.com:azrael417/qdpxx.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[qdpxx]}; ${GIT_UPDATE_SUBMODULES}; '
-GET[qdpxx_single]='${GIT_CLONE} git@github.com:azrael417/qdpxx.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[qdpxx]}; ${GIT_UPDATE_SUBMODULES}; '
+GET[qdpxx_single]='${GIT_CLONE} git@github.com:azrael417/qdpxx.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[qdpxx_single]}; ${GIT_UPDATE_SUBMODULES}; '
 GET[quda]='${GIT_CLONE} git@github.com:lattice/quda.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[quda]}; ${GIT_UPDATE_SUBMODULES}; '
 GET[qphix]='${GIT_CLONE} git@github.com:JeffersonLab/qphix.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[qphix]}; ${GIT_UPDATE_SUBMODULES}; '
-GET[chroma]='${GIT_CLONE} git@github.com:JeffersonLab/chroma.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout devel; ${GIT_UPDATE_SUBMODULES}; '
-GET[chroma_single]='${GIT_CLONE} git@github.com:JeffersonLab/chroma.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout devel; ${GIT_UPDATE_SUBMODULES}; '
+GET[chroma]='${GIT_CLONE} git@github.com:JeffersonLab/chroma.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[chroma]}; ${GIT_UPDATE_SUBMODULES}; '
+GET[chroma_single]='${GIT_CLONE} git@github.com:JeffersonLab/chroma.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[chroma_single]}; ${GIT_UPDATE_SUBMODULES}; '
 
 unset GIT_BRANCH
 declare -A GIT_BRANCH
@@ -91,7 +91,7 @@ INSTALL[libxml2]='${DIR[INSTALL]}/libxml2'
 INSTALL[hdf5]='${DIR[INSTALL]}/hdf5'
 INSTALL[fftw]='${DIR[INSTALL]}/fftw'
 INSTALL[qdpxx]='${DIR[INSTALL]}/qdpxx'
-INSTALL[qdpxx]='${DIR[INSTALL]}/qdpxx_single'
+INSTALL[qdpxx_single]='${DIR[INSTALL]}/qdpxx_single'
 INSTALL[quda]='${DIR[INSTALL]}/quda'
 INSTALL[qphix]='${DIR[INSTALL]}/qphix'
 INSTALL[chroma]='${DIR[INSTALL]}/chroma'
@@ -138,7 +138,7 @@ CONFIGURE[qdpxx_single]='${SOURCE[qdpxx_single]}/configure '
 CONFIGURE[quda]='cmake ${SOURCE[quda]} '
 CONFIGURE[qphix]='${SOURCE[qphix]}/configure'
 CONFIGURE[chroma]='${SOURCE[chroma]}/configure '
-CONFIGURE[chroma]='${SOURCE[chroma_single]}/configure '
+CONFIGURE[chroma_single]='${SOURCE[chroma_single]}/configure '
 
 unset CONFIG_FLAGS
 declare -A CONFIG_FLAGS

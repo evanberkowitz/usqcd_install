@@ -150,6 +150,9 @@ done
 
 case $ACTION in
     get)
+        echo "###"
+        echo "### GETTING $LIBRARY"
+        echo "###"
         if [[ -d "$(UNQUOTE ${SOURCE[$LIBRARY]})" ]]; then
             echo "Directory exists: $(UNQUOTE ${SOURCE[$LIBRARY]})"
             overwrite=$(PROMPT_USER "Overwrite?" "NO")
@@ -160,9 +163,6 @@ case $ACTION in
                 exit;
             fi
         fi
-        echo "###"
-        echo "### GETTING $LIBRARY"
-        echo "###"
         echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/get.log"
         eval "$(UNQUOTE ${GET[$LIBRARY]}) > $(UNQUOTE ${LOG[$LIBRARY]})/get.log 2>&1"
         ;;

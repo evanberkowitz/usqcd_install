@@ -49,8 +49,70 @@ A machine file is a file that lives in the `machine` directory of this repo.  It
 
 Machine files are welcome!  I'm happy to accept pull requests, so as to build up successful scripts for as many machines as possible.  That makes this script more and more useful.
 
+Machine files are bash (they get `source`d), and they can perform arbitrary steps if you want to get more and more clever, or if you have some exceptional scenario you want to handle.  Mostly, you will just use them to set the [configurable variables](#configurable-variables).
+
+### Usage
+
+In its normal usage, exactly three variables are required, so that the script is invoked via
+
+```
+./usqcd.sh $MACHINE $LIBRARY $ACTION
+```
+
+- `$MACHINE` is one of the files in the machine directory, without the .sh.
+- `$LIBRARY` is one of the software packages specified in the STACK variable in the machine file.  Currently recognized target libraries are
+    
+    - [`qmp`][qmp]
+    - [`libxml2`][libxml2]
+    - [`hdf5`][hdf5]
+    - [`fftw`][fftw]
+    - [`qdpxx`][qdpxx], which is actually `qdp++`.
+    - `qdpxx_single`, a single-precision build of `qdp++`.
+    - [`quda`][quda]
+    - [`qphix`][qphix]
+    - [`chroma`][chroma]
+    - `chroma_single`, a single-precision build of `chroma`.
+    
+- `$ACTION`  is what you want to happen:
+
+    - `report`      Report information relevant to the LIBRARY.
+    - `get`         Go get the package.
+    - `configure`   Prepare to complile.
+    - `make`        Compile.
+    - `install`     Install.
+    - `complete`    get, configure, make, and install.
+
+Instead of the three mandatory arguments, you can
+
+- `usqcd.sh help`           to see help information (which is basically this section of the README.).
+- `usqcd.sh license`        to see [licensing information](#license).
+
 ### Configurable Variables
 
+Defaults are found in `machines/default.sh`.   Any variable set there can be overridden in a custom machine file.  
+
+The most widely-reaching is `BASE`.  It is a path to the directory where you want to base your installation.  By default, inside the `$BASE` folder will be four directories `DIR[SOURCE]=$BASE/source` `DIR[BUILD]=$BASE/build` `DIR[INSTALL]=$BASE/install` and `DIR[LOG]=${BASE}/log`, but any of these can be over manually and put someplace else.  For example, if you want to put your installation somewhere easily accessible to your collaborators but don't want them fiddling with your source code, you can reassign `DIR[INSTALL]=/some/other/shared/path`.
+
+Many settings are stored in associative arrays like `VARIABLE[library]` where `VARIABLE` indicates the purpose of variable and `library` indicates which library it is for.
+
+The generally useful things to overwrite are:
+
+- `GET[library]`    how to get the source code for `library`.
+- `GIT_BRANCH[library]` which branch to check out, if the source is a git repo.  Most are `master` or `devel`, at the recommendation of some USQCD software developers.
+- `SOURCE[library]` defaults to `${DIR[SOURCE]}/library`.
+- `BUILD[library]` defaults to `${DIR[BUILD]}/library`.
+- `LOG[library]` defaults to `${DIR[LOG]}/library`.
+- `INSTALL[library]` defaults to `${DIR[INSTALL]}/library`.
+- `OTHER_LIBS[library]` a space-delimited list of relative paths from `${SOURCE[library]}` that need configuration before compilation.
+- `LIBS[library]` libraries you might need that fall outside the scope of this script.
+- `CONFIGURE[library]` the executable/script that configures before compilation.  For most libraries, `${SOURCE[library]}/configure`, but `quda` us `cmake`.
+- `CONFIG_FLAGS` what arguments to pass when invoking `CONFIGURE[library]`.  The defaults differ from library to library, but most are set to something very sensible.  You can modify them with `+=` or over-ride them completely, of course.
+- `CXX_FLAGS[library]` defaults to an empty variable `CXX_FLAGS[DEFAULT]` that you should probably set in your machine file.
+- `C_FLAGS[library]` similarly defaults to `C_FLAGS[DEFAULT]` which is the empty string unless you specify something in the machine file.
+- `QUDA_LIBS[library]` defaults to the empty string, unless `GPUS` is not the empty string, in which case it is `QUDA_LIBS[DEFAULT]='-lquda -lcudart -lcuda'`.
+- `LD_FLAGS[library]` defaults to `LD_FLAGS[DEFAULT]` which is empty unless specified by the user.  The exception is `LD_FLAGS[chroma]` which adds some warning-suppression flags that maybe more properly should be in a machine file, but they're very often useful.
+
+Then, there are things you probably shouldn't change.  These perform some of the automatic regeneration of configuration scripts that tend to be unreliable with the distributed USQCD software.  They include `AUTOHEADER`, `ACLOCAL`, `AUTOMAKE`, `AUTOCONF`, `AUTORECONF`, `AUTOTOOLS`.  The two you may want to override are `MAKE="make -j 10"` and `LIBTOOL="libtoolize"` (on a Mac, for example, `libtoolize` is usually the system-installed one to avoid problems, so `brew install libtool` installes `glibtoolize`).
 
 
 ### LICENSE
@@ -89,3 +151,12 @@ usqcd.sh
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ```
+
+[qmp]:          https://usqcd-software.github.io/qmp/
+[libxml2]:      http://xmlsoft.org/
+[hdf5]:         https://support.hdfgroup.org/HDF5/
+[fftw]:         http://www.fftw.org/
+[qdpxx]:        https://usqcd-software.github.io/qdpxx/
+[quda]:         https://github.com/lattice/quda
+[qphix]:        http://jeffersonlab.github.io/qphix/
+[chroma]:       https://usqcd-software.github.io/Chroma.html

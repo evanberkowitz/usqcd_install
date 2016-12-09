@@ -17,7 +17,7 @@ GIT_UPDATE_SUBMODULES="git submodule update --init --recursive"
 GET[qmp]='${GIT_CLONE} git@github.com:usqcd-software/qmp.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[qmp]}; popd'
 # GET[libxml2]='${GIT_CLONE} git://git.gnome.org/libxml2 ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout v2.9.4; popd' # doesn't autotools and configure properly.
 GET[libxml2]='curl ftp://xmlsoft.org/libxml2/libxml2-2.9.4.tar.gz -o ${SOURCE[$LIBRARY]%/*}/libxml2-2.9.4.tar.gz; pushd ${SOURCE[$LIBRARY]%/*}; tar -xzf libxml2-2.9.4.tar.gz; mv libxml2-2.9.4 ${SOURCE[$LIBRARY]}; popd;'
-GET[hdf5]='curl https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/hdf5-1.10.0-patch1.tar.gz -o ${SOURCE[$LIBRARY]%/*}/hdf5-1.10.0-patch1.tar.gz; pushd ${SOURCE[$LIBRARY]%/*}; tar -xzf ${SOURCE[$LIBRARY]%/*}/hdf5-1.10.0-patch1.tar.gz;  mv hdf5-1.10.0-patch1 ${SOURCE[$LIBRARY]}; popd;'
+GET[hdf5]='curl https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.16/src/hdf5-1.8.16.tar.gz -o ${SOURCE[$LIBRARY]%/*}/hdf5-1.8.16.tar.gz; pushd ${SOURCE[$LIBRARY]%/*}; tar -xzf ${SOURCE[$LIBRARY]%/*}/hdf5-1.8.16.tar.gz;  mv hdf5-1.8.16 ${SOURCE[$LIBRARY]}; popd;'
 GET[fftw]='${GIT_CLONE} git@github.com:FFTW/fftw3.git ${SOURCE[$LIBRARY]}; '
 GET[qdpxx]='${GIT_CLONE} git@github.com:azrael417/qdpxx.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[qdpxx]}; ${GIT_UPDATE_SUBMODULES}; popd; '
 GET[qdpxx_single]='${GIT_CLONE} git@github.com:azrael417/qdpxx.git ${SOURCE[$LIBRARY]}; pushd ${SOURCE[$LIBRARY]}; git checkout ${GIT_BRANCH[qdpxx_single]}; ${GIT_UPDATE_SUBMODULES}; popd; '
@@ -150,7 +150,7 @@ CONFIG_FLAGS[fftw]='--prefix=${INSTALL[fftw]} '
 CONFIG_FLAGS[qdpxx]='--prefix=${INSTALL[qdpxx]} --with-qmp=${INSTALL[qmp]} --with-libxml2=${INSTALL[libxml2]} --with-hdf5=${INSTALL[hdf5]} --enable-openmp --enable-precision=double --enable-largefile --enable-parallel-io --enable-db-lite --enable-parallel-arch=parscalar'
 CONFIG_FLAGS[qdpxx_single]='--prefix=${INSTALL[qdpxx_single]} --with-qmp=${INSTALL[qmp]} --with-libxml2=${INSTALL[libxml2]} --with-hdf5=${INSTALL[hdf5]} --enable-openmp --enable-precision=single --enable-largefile --enable-parallel-io --enable-db-lite --enable-parallel-arch=parscalar'
 CONFIG_FLAGS[quda]='-DQUDA_GPU_ARCH=${GPU_ARCH} -DQUDA_MPI=ON -DQUDA_QMP=ON -DQUDA_QMPHOME=${INSTALL[qmp]} -DMPI_C_COMPILER=${CC} -DMPI_CXX_COMPILER=${CXX} -DQUDA_DIRAC_WILSON=ON -DQUDA_DIRAC_DOMAIN_WALL=ON ' # -DQUDA_DIRAC_TWISTED_MASS=OFF  -DQUDA_LINK_HISQ=OFF -DQUDA_FORCE_GAUGE=OFF -DQUDA_FORCE_HISQ=OFF
-CONFIG_FLAGS[qphix]='--prefix=${INSTALL[qphix]}   --with-qmp=${INSTALL[qmp]} --enable-parallel-arch=parscalar --disable-mm-malloc ' # --with-qdp and --with-qdp++ seem to fail.
+CONFIG_FLAGS[qphix]='--prefix=${INSTALL[qphix]}   --with-qmp=${INSTALL[qmp]} --with-qdp=${INSTALL[qdpxx]} --enable-parallel-arch=parscalar --disable-mm-malloc ' # --with-qdp and --with-qdp++ seem to fail.
 CONFIG_FLAGS[chroma]='--prefix=${INSTALL[chroma]} --with-qmp=${INSTALL[qmp]} --with-qdp=${INSTALL[qdpxx]} --enable-openmp '
 CONFIG_FLAGS[chroma_single]='--prefix=${INSTALL[chroma_single]} --with-qmp=${INSTALL[qmp]} --with-qdp=${INSTALL[qdpxx_single]} --enable-openmp '
 

@@ -63,15 +63,15 @@ In its normal usage, exactly three variables are required, so that the script is
 - `$MACHINE` is one of the files in the machine directory, without the .sh.
 - `$LIBRARY` is one of the software packages specified in the STACK variable in the machine file.  Currently recognized target libraries are
     
-    - [`qmp`][qmp]
-    - [`libxml2`][libxml2]
-    - [`hdf5`][hdf5]
-    - [`fftw`][fftw]
+    - [`qmp`][qmp], the QCD Message Passing layer.
+    - [`libxml2`][libxml2], the parser for xml, which is needed for many input files.
+    - [`hdf5`][hdf5], which was [hooked into QDP++](https://github.com/azrael417/qdpxx) and makes life nice.
+    - [`fftw`][fftw], [EXPERIMENTAL] - not actually hooked into any of the USQCD stack, but is needed for some of the applications I use built on top.
     - [`qdpxx`][qdpxx], which is actually `qdp++`.
     - `qdpxx_single`, a single-precision build of `qdp++`.
-    - [`quda`][quda]
-    - [`qphix`][qphix]
-    - [`chroma`][chroma]
+    - [`quda`][quda], a library for performing calculations on GPUs.
+    - [`qphix`][qphix], a library which provides QCD solvers on Xeon Phi, Xeon, and KNX Intel architectures.
+    - [`chroma`][chroma], a library and application suite that provides physics capability.
     - `chroma_single`, a single-precision build of `chroma`.
     
 - `$ACTION`  is what you want to happen:

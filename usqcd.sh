@@ -108,6 +108,11 @@ popd () {
     command popd "$@" > /dev/null
 }
 
+if [[ ! -f ${script_folder}/machines/$MACHINE.sh ]]; then
+    echo "Machine file not found: ${script_folder}/machines/$MACHINE.sh"
+    exit 1
+fi
+
 source ${script_folder}/machines/$MACHINE.sh    # Read the user options, as some are needed for
 source ${script_folder}/machines/default.sh     # the default settings
 source ${script_folder}/machines/$MACHINE.sh    # after which, the user can over-ride the defaults

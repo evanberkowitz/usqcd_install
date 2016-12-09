@@ -94,7 +94,7 @@ Instead of the three mandatory arguments, you can
 
 Defaults are found in `machines/default.sh`.   Any variable set there can be overridden in a custom machine file.  
 
-The most widely-reaching is `BASE`.  It is a path to the directory where you want to base your installation.  By default, inside the `$BASE` folder will be four directories `DIR[SOURCE]=$BASE/source` `DIR[BUILD]=$BASE/build` `DIR[INSTALL]=$BASE/install` and `DIR[LOG]=${BASE}/log`, but any of these can be over manually and put someplace else.  For example, if you want to put your installation somewhere easily accessible to your collaborators but don't want them fiddling with your source code, you can reassign `DIR[INSTALL]=/some/other/shared/path`.
+The most widely-reaching is `BASE`.  It is a path to the directory where you want to base your installation.  By default, inside the `$BASE` folder will be four directories `DIR[SOURCE]=$BASE/source` `DIR[BUILD]=$BASE/build` `DIR[INSTALL]=$BASE/install` and `DIR[LOG]=${BASE}/log`, but any of these can be overridden manually and put someplace else.  For example, if you want to put your installation somewhere easily accessible to your collaborators but don't want them fiddling with your source code, you can reassign `DIR[INSTALL]=/some/other/shared/path`.
 
 You also must set the `STACK` variable to be a space-delimited string of libraries you want in your software stack.  Ideally you would put them in compilation order, so that the `stack` special library keyword works.
 
@@ -110,7 +110,7 @@ The generally useful things to overwrite are:
 - `INSTALL[library]` defaults to `${DIR[INSTALL]}/library`.
 - `OTHER_LIBS[library]` a space-delimited list of relative paths from `${SOURCE[library]}` that need configuration before compilation.
 - `LIBS[library]` libraries you might need that fall outside the scope of this script.
-- `CONFIGURE[library]` the executable/script that configures before compilation.  For most libraries, `${SOURCE[library]}/configure`, but `quda` us `cmake`.
+- `CONFIGURE[library]` the executable/script that configures before compilation.  For most libraries, `${SOURCE[library]}/configure`, but `quda` uses `cmake`.
 - `CONFIG_FLAGS` what arguments to pass when invoking `CONFIGURE[library]`.  The defaults differ from library to library, but most are set to something very sensible.  You can modify them with `+=` or over-ride them completely, of course.
 - `CXX_FLAGS[library]` defaults to an empty variable `CXX_FLAGS[DEFAULT]` that you should probably set in your machine file.
 - `C_FLAGS[library]` similarly defaults to `C_FLAGS[DEFAULT]` which is the empty string unless you specify something in the machine file.
@@ -127,7 +127,7 @@ I would really appreciate it if you would cite
 ```
 @misc{berkowitz.usqcd.installer,
   author = {Berkowitz, Evan},
-  title = {\texttt{usqcd_installer.sh}},
+  title = {\texttt{usqcd_install}},
   year = {2016},
   publisher = {GitHub},
   journal = {GitHub repository},

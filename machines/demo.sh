@@ -1,9 +1,7 @@
-BASE=$(unset CDPATH && cd "$(dirname "$0")" && echo $PWD)
+BASE=$(unset CDPATH && cd "$(dirname "$0")" && echo $PWD)/demo
 STACK="qmp libxml2 hdf5 fftw qdpxx quda qphix chroma"
 CC=gcc
 CXX=g++
-
-LIBS=("qmp" "libxml2" "hdf5" "fftw" "qdpxx" "quda" "qphix" "chroma")
 
 unset DIR
 declare -A DIR
@@ -19,14 +17,14 @@ GIT_CLONE="git clone --recursive"
 GIT_UPDATE_SUBMODULES="git submodule update --init --recursive"
 #GIT_UPDATE_SUBMODULES="echo FOOBAR"
 
-GET[qmp]='echo GETTING qmp'
-GET[libxml2]='echo GETTING libxml2'
-GET[hdf5]='echo GETTING hdf5'
-GET[fftw]='echo GETTING fftw'
-GET[qdpxx]='echo GETTING qdpxx'
-GET[quda]='echo GETTING quda'
-GET[qphix]='echo GETTING qphix'
-GET[chroma]='echo GETTING chroma'
+GET[qmp]='echo GETTING qmp; mkdir ${SOURCE[qmp]}'
+GET[libxml2]='echo GETTING libxml2; mkdir ${SOURCE[libxml2]}'
+GET[hdf5]='echo GETTING hdf5; mkdir ${SOURCE[hdf5]}'
+GET[fftw]='echo GETTING fftw; mkdir ${SOURCE[fftw]}'
+GET[qdpxx]='echo GETTING qdpxx; mkdir ${SOURCE[qdpxx]}'
+GET[quda]='echo GETTING quda; mkdir ${SOURCE[quda]}'
+GET[qphix]='echo GETTING qphix; mkdir ${SOURCE[qphix]}'
+GET[chroma]='echo GETTING chroma; mkdir ${SOURCE[chroma]}'
 
 unset SOURCE
 declare -A SOURCE

@@ -74,6 +74,8 @@ In its normal usage, exactly three variables are required, so that the script is
     - [`chroma`][chroma], a library and application suite that provides physics capability.
     - `chroma_single`, a single-precision build of `chroma`.
     
+    You may also specify `stack` to indicate you want to do the action for every library specified in the `STACK` variable of the machine file.
+    
 - `$ACTION`  is what you want to happen:
 
     - `report`      Report information relevant to the LIBRARY.
@@ -93,6 +95,8 @@ Instead of the three mandatory arguments, you can
 Defaults are found in `machines/default.sh`.   Any variable set there can be overridden in a custom machine file.  
 
 The most widely-reaching is `BASE`.  It is a path to the directory where you want to base your installation.  By default, inside the `$BASE` folder will be four directories `DIR[SOURCE]=$BASE/source` `DIR[BUILD]=$BASE/build` `DIR[INSTALL]=$BASE/install` and `DIR[LOG]=${BASE}/log`, but any of these can be over manually and put someplace else.  For example, if you want to put your installation somewhere easily accessible to your collaborators but don't want them fiddling with your source code, you can reassign `DIR[INSTALL]=/some/other/shared/path`.
+
+You also must set the `STACK` variable to be a space-delimited string of libraries you want in your software stack.  Ideally you would put them in compilation order, so that the `stack` special library keyword works.
 
 Many settings are stored in associative arrays like `VARIABLE[library]` where `VARIABLE` indicates the purpose of variable and `library` indicates which library it is for.
 

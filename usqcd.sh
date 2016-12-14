@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 # Installer suite for USQCD and related packages.
 # Copyright (C) 2016  Evan Berkowitz
 

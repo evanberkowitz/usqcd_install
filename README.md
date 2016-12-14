@@ -27,6 +27,7 @@ This makes it easy to alter the path to, compilation settings for, etc., just on
 - [Requirements](#requirements)
 - [Machine files](#machine-files)
 - [Usage](#usage)
+  - [The `get` action](#the-get-action)
 - [Configurable Variables](#configurable-variables)
 - [License](#license)
 
@@ -39,10 +40,11 @@ The requirements are very basic:
 The other requirements are due to defaults---in principle you can configure your settings so that they aren't needed.  I struggle to imagine when that would be a good idea.
 
 - `git`:  The default for most libraries is to `git clone` the software locally.
-- `curl`: Currently, the default method to get the hdf5 source code.
+- `curl`: Currently, the default method to get the libxml2 and hdf5 source code.
 - `autotools`: `libtoolize`, `autoheader`, `aclocal`, `automake`, `autoconf`, `autoreconf`.
 - `make`: For compiling!
-- `cmake`: (soon!) for configuring QUDA.
+- `cmake`: if you want `quda`.
+- [github](http://www.github.com) account with an SSH-key, as discussed in the [section on getting source code](#the-get-action).
 
 ### Machine files
 
@@ -89,6 +91,24 @@ Instead of the three mandatory arguments, you can
 
 - `usqcd.sh help`           to see help information (which is basically this section of the README.).
 - `usqcd.sh license`        to see [licensing information](#license).
+
+#### The `get` action.
+
+The `git` repos are all on github, and the default `GET` methods that use `git` use `ssh` rather than `https`.  Life will be much easier for you if you have a github account and can [use a public key for authentication][github-ssh].  Then, you have two options, you can add
+
+```
+Host github.com
+    IdentityFile /the/path/to/your_key
+```
+
+to `~/.ssh/config`.  Alternatively, you may utter the magic incantation
+
+```
+eval `ssh-agent`
+ssh-add /the/path/to/your_key
+```
+
+before invoking the script.  I made this the default mode of getting source code, because otherwise it is hard to set the script going and walk away.  You can change the `GET` strings at your own option / hazard.
 
 ### Configurable Variables
 
@@ -165,3 +185,4 @@ usqcd.sh
 [quda]:         https://github.com/lattice/quda
 [qphix]:        http://jeffersonlab.github.io/qphix/
 [chroma]:       https://usqcd-software.github.io/Chroma.html
+[github-ssh]:   https://help.github.com/articles/generating-an-ssh-key/

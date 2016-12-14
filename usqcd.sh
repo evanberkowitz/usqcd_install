@@ -249,6 +249,10 @@ case $ACTION in
         echo "###"
         echo "### INSTALLING $LIBRARY"
         echo "###"
+        if [[ "quda" == "$LIBRARY" ]]; then
+            echo "quda is built in the installation directory!"
+            exit 0;
+        fi
         echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/install.log"
         pushd $(UNQUOTE "${BUILD[$LIBRARY]}")
         $MAKE install > "$(UNQUOTE ${LOG[$LIBRARY]})/install.log" 2>&1

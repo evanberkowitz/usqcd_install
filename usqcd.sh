@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 # Installer suite for USQCD and related packages.
 # Copyright (C) 2016  Evan Berkowitz
 
@@ -170,6 +170,8 @@ case $ACTION in
         fi
         echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/get.log"
         eval "$(UNQUOTE ${GET[$LIBRARY]}) > $(UNQUOTE ${LOG[$LIBRARY]})/get.log 2>&1"
+        
+        echo "${MESSAGE[$LIBRARY,get]}"
         ;;
     configure)
         echo "###"
@@ -225,6 +227,8 @@ case $ACTION in
             echo ... failed; exit 1;
         fi
         popd
+        
+        echo "${MESSAGE[$LIBRARY,configure]}"
         ;;
     make) 
         echo "###"
@@ -240,6 +244,8 @@ case $ACTION in
             echo ... failed; exit 1;
         fi
         popd
+        
+        echo "${MESSAGE[$LIBRARY,make]}"
         ;;
     install)
         if [[ ! -d $(UNQUOTE "${BUILD[$LIBRARY]}") ]]; then
@@ -261,6 +267,8 @@ case $ACTION in
             echo ... failed; exit 1;
         fi
         popd
+        
+        echo "${MESSAGE[$LIBRARY,install]}"
         ;;
     report)
         echo "###"
@@ -295,6 +303,7 @@ case $ACTION in
         echo "LD_LIBRARY_PATH   ${LD_LIBRARY_PATH}"
         echo "================================================"
         
+        echo "${MESSAGE[$LIBRARY,report]}"
         ;;
     complete)
         for action in get configure make install; do
@@ -304,6 +313,8 @@ case $ACTION in
                 exit 1;
             fi
         done ;
+        
+        echo "${MESSAGE[$LIBRARY,complete]}"
         exit ;;
     clean)
         for dir in INSTALL BUILD SOURCE; do
@@ -314,6 +325,8 @@ case $ACTION in
                 DELETE_FOLDER $target; 
             fi
         done ;
+        
+        echo "${MESSAGE[$LIBRARY,clean]}"
         exit ;;
     *)
     echo "Unknown action $ACTION"; exit 1;;

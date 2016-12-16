@@ -27,15 +27,15 @@ LIBS[DEFAULT]="-ldl /usr/local/tools/zlib-1.2.6/lib/libz.a "
 LD_FLAGS[DEFAULT]="-static"
 CONFIG_FLAGS[qphix]+=" --enable-clover --enable-proc=QPX --enable-soalen=4 "
 
-if [[ "chroma" == "$LIBRARY" && ! -z "${vulcan_first}" ]]; then # && "complete" == "$ACTION" 
-    echo "HEY!  Pay attention to this!"
-    echo "Vulcan has some weird issue with -lz"
-    echo "To circumvent this, I added /usr/local/tools/zlib-1.2.6/lib/libz.a to LIBS[DEFAULT]."
-    echo "BUT, qdp++-config sticks -lz back in.  So you will have trouble making."
-    echo "Thus, there are some unfortunate manual steps."
-    echo ""
-    echo $(UNQUOTE "After chroma is configured but before making, go and remove -lz from ${BUILD[chroma]}/chroma-config")
-    echo ""
-    sleep 5
-fi
-vulcan_first="no"
+MESSAGE[vulcan,configure]="
+HEY!  Pay attention to this!
+Vulcan has some weird issue with -lz
+
+To circumvent this, I added /usr/local/tools/zlib-1.2.6/lib/libz.a to LIBS[DEFAULT].
+
+BUT, qdp++-config sticks -lz back in.  So you will have trouble making.
+Thus, there are some unfortunate manual steps.
+
+After chroma is configured but before making, go and remove -lz from $(UNQUOTE "${BUILD[chroma]}/chroma-config")
+
+"

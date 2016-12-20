@@ -110,6 +110,24 @@ popd () {
 
 if [[ ! -f ${script_folder}/machines/$MACHINE.sh ]]; then
     echo "Machine file not found: ${script_folder}/machines/$MACHINE.sh"
+    suggestions="$(find ${script_folder}/machines -type file)"
+    suggestions=${suggestions//${script_folder}\/machines\//}
+    suggestions=${suggestions//.sh/}
+    
+    pattern="-e \"$MACHINE\" -e \""
+    pattern+=$(echo "${MACHINE}" | awk -F'/' '{OFS="\" -e \""; $0=$0 } {$1=$1 ; print $0 }')\"
+    
+    suggestions="$(eval "echo \"${suggestions}\" | grep $pattern")"
+
+    if [[ ! -z "${suggestions}" ]]; then
+        echo ""
+        echo "You might be looking for one of these:"
+        for i in $(echo "${suggestions}"); do
+            echo "    ${i}"
+        done
+        echo ""
+    fi
+    
     exit 1
 fi
 

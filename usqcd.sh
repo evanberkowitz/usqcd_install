@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 # Installer suite for USQCD and related packages.
 # Copyright (C) 2016  Evan Berkowitz
 
@@ -171,7 +171,7 @@ case $ACTION in
         echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/get.log"
         eval "$(UNQUOTE ${GET[$LIBRARY]}) > $(UNQUOTE ${LOG[$LIBRARY]})/get.log 2>&1"
         
-        echo "${MESSAGE[$LIBRARY,get]}"
+        echo "$(UNQUOTE "${MESSAGE[$LIBRARY,get]}")"
         ;;
     configure)
         echo "###"
@@ -228,7 +228,7 @@ case $ACTION in
         fi
         popd
         
-        echo "${MESSAGE[$LIBRARY,configure]}"
+        echo "$(UNQUOTE "${MESSAGE[$LIBRARY,configure]}")"
         ;;
     make) 
         echo "###"
@@ -245,7 +245,7 @@ case $ACTION in
         fi
         popd
         
-        echo "${MESSAGE[$LIBRARY,make]}"
+        echo "$(UNQUOTE "${MESSAGE[$LIBRARY,make]}")"
         ;;
     install)
         if [[ ! -d $(UNQUOTE "${BUILD[$LIBRARY]}") ]]; then
@@ -268,7 +268,7 @@ case $ACTION in
         fi
         popd
         
-        echo "${MESSAGE[$LIBRARY,install]}"
+        echo "$(UNQUOTE "${MESSAGE[$LIBRARY,install]}")"
         ;;
     report)
         echo "###"
@@ -303,7 +303,7 @@ case $ACTION in
         echo "LD_LIBRARY_PATH   ${LD_LIBRARY_PATH}"
         echo "================================================"
         
-        echo "${MESSAGE[$LIBRARY,report]}"
+        echo "$(UNQUOTE "${MESSAGE[$LIBRARY,report]}")"
         ;;
     complete)
         for action in get configure make install; do
@@ -326,7 +326,7 @@ case $ACTION in
             fi
         done ;
         
-        echo "${MESSAGE[$LIBRARY,clean]}"
+        echo "$(UNQUOTE "${MESSAGE[$LIBRARY,clean]}")"
         exit ;;
     *)
     echo "Unknown action $ACTION"; exit 1;;

@@ -332,7 +332,7 @@ case $ACTION in
             fi
         done ;
         
-        echo "${MESSAGE[$LIBRARY,complete]}"
+        echo "$(UNQUOTE "${MESSAGE[$LIBRARY,complete]}")"
         exit ;;
     clean)
         for dir in INSTALL BUILD SOURCE; do

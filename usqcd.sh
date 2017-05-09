@@ -236,10 +236,10 @@ case $ACTION in
         echo "================================================" #
         
         # Add QUDA_LIBS=\"-lquda -lcudart -lcuda\"  ?
-        echo "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" LIBS=\"$(UNQUOTE "${LIBS[$LIBRARY]}")\" QUDA_LIBS=\"$(UNQUOTE "${QUDA_LIBS[$LIBRARY]}")\" LDFLAGS=\"$(UNQUOTE "${LD_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}")"
+        echo "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" CPPFLAGS=\"$(UNQUOTE "${CPP_FLAGS[$LIBRARY]}")\" LIBS=\"$(UNQUOTE "${LIBS[$LIBRARY]}")\" QUDA_LIBS=\"$(UNQUOTE "${QUDA_LIBS[$LIBRARY]}")\" LDFLAGS=\"$(UNQUOTE "${LD_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}")"
         echo ""
         echo "        tail -f $(UNQUOTE ${LOG[$LIBRARY]})/configure.log"
-        eval "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" LIBS=\"$(UNQUOTE "${LIBS[$LIBRARY]}")\" QUDA_LIBS=\"$(UNQUOTE "${QUDA_LIBS[$LIBRARY]}")\" LDFLAGS=\"$(UNQUOTE "${LD_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}") > $(UNQUOTE ${LOG[$LIBRARY]})/configure.log 2>&1" 
+        eval "CC=\"$CC\" CFLAGS=\"$(UNQUOTE "${C_FLAGS[$LIBRARY]}")\" CXX=\"$CXX\" CXXFLAGS=\"$(UNQUOTE "${CXX_FLAGS[$LIBRARY]}")\" CPPFLAGS=\"$(UNQUOTE "${CPP_FLAGS[$LIBRARY]}")\" LIBS=\"$(UNQUOTE "${LIBS[$LIBRARY]}")\" QUDA_LIBS=\"$(UNQUOTE "${QUDA_LIBS[$LIBRARY]}")\" LDFLAGS=\"$(UNQUOTE "${LD_FLAGS[$LIBRARY]}")\" $(UNQUOTE "${CONFIGURE[$LIBRARY]} ${CONFIG_FLAGS[$LIBRARY]}") > $(UNQUOTE ${LOG[$LIBRARY]})/configure.log 2>&1" 
         status=$?
         if [[ $status -ne 0 ]]; then
             echo ... failed; exit 1;

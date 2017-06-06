@@ -2,7 +2,7 @@ BASE=$HOME/USQCD/jureca
 
 HOST=x86_64-linux-gnu
 
-module load GCC/5.4.0 ParaStationMPI/5.1.5-1 HDF5/1.8.17 FFTW/3.3.5
+module load GCC/5.4.0 ParaStationMPI/5.1.9-1 HDF5/1.8.18 FFTW/3.3.6
 INSTALL[hdf5]=/usr/local/software/jureca/Stages/2016b/software/HDF5/1.8.17-gpsmpi-2016b
 INSTALL[fftw]=/usr/local/software/jureca/Stages/2016b/software/FFTW/3.3.5-gpsmpi-2016b/
 

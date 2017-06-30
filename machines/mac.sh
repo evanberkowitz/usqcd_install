@@ -3,8 +3,8 @@ STACK="qmp qdpxx chroma qdpxx_single chroma_single"
 
 
 # brew install gcc
-export HOMEBREW_CC=gcc-6
-export HOMEBREW_CXX=g++-6
+export HOMEBREW_CC=gcc-7
+export HOMEBREW_CXX=g++-7
 # brew install open-mpi  --without-fortran --with-cxx-bindings --c++11 --with-mpi-thread-multiple  # --without-fortran is key to avoid `make check` errors on my system.
 GET[libxml2]="brew install libxml2"
 GET[fftw]="brew install fftw --with-mpi --with-openmp"

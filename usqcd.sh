@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Installer suite for USQCD and related packages.
 # Copyright (C) 2016  Evan Berkowitz
 

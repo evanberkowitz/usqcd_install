@@ -18,7 +18,7 @@ export CC=/usr/local/bin/mpicc
 C_FLAGS[DEFAULT]="-O3 -march=corei7 -fpermissive -fopenmp -D_GLIBC_USE_CXX1_ABI=0"
 
 export CXX=/usr/local/bin/mpicxx
-CXX_FLAGS[DEFAULT]="-O3 -std=c++11 -march=corei7 -ffast-math -funroll-all-loops -fpermissive -fopenmp -D_GLIBC_USE_CXX1_ABI=0"
+CXX_FLAGS[DEFAULT]="-O3 -std=c++14 -march=corei7 -ffast-math -funroll-all-loops -fpermissive -fopenmp -D_GLIBC_USE_CXX1_ABI=0"
 
 # No zmuldefs.
 LD_FLAGS[chroma]='${LD_FLAGS[DEFAULT]}'

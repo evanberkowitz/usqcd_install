@@ -149,7 +149,7 @@ CONFIG_FLAGS[hdf5]='--prefix=${INSTALL[hdf5]} '
 CONFIG_FLAGS[fftw]='--prefix=${INSTALL[fftw]} '
 CONFIG_FLAGS[qdpxx]='--prefix=${INSTALL[qdpxx]} --with-qmp=${INSTALL[qmp]} --with-libxml2=${INSTALL[libxml2]} --with-hdf5=${INSTALL[hdf5]} --enable-openmp --enable-precision=double --enable-largefile --enable-parallel-io --enable-db-lite --enable-parallel-arch=parscalar'
 CONFIG_FLAGS[qdpxx_single]='--prefix=${INSTALL[qdpxx_single]} --with-qmp=${INSTALL[qmp]} --with-libxml2=${INSTALL[libxml2]} --with-hdf5=${INSTALL[hdf5]} --enable-openmp --enable-precision=single --enable-largefile --enable-parallel-io --enable-db-lite --enable-parallel-arch=parscalar'
-CONFIG_FLAGS[quda]='-DQUDA_GPU_ARCH=${GPU_ARCH} -DQUDA_MPI=ON -DQUDA_QMP=ON -DQUDA_QMPHOME=${INSTALL[qmp]} -DMPI_C_COMPILER=${CC} -DMPI_CXX_COMPILER=${CXX} -DQUDA_DIRAC_WILSON=ON -DQUDA_DIRAC_DOMAIN_WALL=ON ' # -DQUDA_DIRAC_TWISTED_MASS=OFF  -DQUDA_LINK_HISQ=OFF -DQUDA_FORCE_GAUGE=OFF -DQUDA_FORCE_HISQ=OFF
+CONFIG_FLAGS[quda]='-DQUDA_GPU_ARCH=${GPU_ARCH} -DQUDA_QMP=ON -DQUDA_QMPHOME=${INSTALL[qmp]} -DMPI_C_COMPILER=${CC} -DMPI_CXX_COMPILER=${CXX} -DQUDA_DIRAC_WILSON=ON -DQUDA_DIRAC_DOMAIN_WALL=ON ' # -DQUDA_DIRAC_TWISTED_MASS=OFF  -DQUDA_LINK_HISQ=OFF -DQUDA_FORCE_GAUGE=OFF -DQUDA_FORCE_HISQ=OFF
 CONFIG_FLAGS[qphix]='--prefix=${INSTALL[qphix]}   --with-qmp=${INSTALL[qmp]} --with-qdp=${INSTALL[qdpxx]} --enable-parallel-arch=parscalar --enable-mm-malloc ' # --disable-mm-malloc # --with-qdp and --with-qdp++ seem to fail.
 CONFIG_FLAGS[chroma]='--prefix=${INSTALL[chroma]} --with-qmp=${INSTALL[qmp]} --with-qdp=${INSTALL[qdpxx]} --enable-openmp '
 CONFIG_FLAGS[chroma_single]='--prefix=${INSTALL[chroma_single]} --with-qmp=${INSTALL[qmp]} --with-qdp=${INSTALL[qdpxx_single]} --enable-openmp '

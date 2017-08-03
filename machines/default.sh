@@ -36,7 +36,7 @@ GIT_BRANCH[fftw]="master"
 GIT_BRANCH[qdpxx]="devel"
 GIT_BRANCH[qdpxx_single]="devel"
 GIT_BRANCH[quda]="devel"
-GIT_BRANCH[qphix]="master"
+GIT_BRANCH[qphix]="devel"
 GIT_BRANCH[chroma]="devel"
 GIT_BRANCH[chroma_single]="devel"
 

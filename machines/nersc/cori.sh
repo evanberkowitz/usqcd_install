@@ -46,5 +46,4 @@ CONFIGURE[qphix]='cmake ${SOURCE[qphix]} '
 CONFIG_FLAGS[qphix]=" -Disa=avx2 -Dhost_cxx='g++' -Dhost_cxxflags='-g -O3 -std=c++11' -Drecursive_jN=$(nproc) -DCMAKE_INSTALL_PREFIX=\"${INSTALL[qphix]}\" -DQDPXX_DIR=\"${INSTALL[qdpxx]}\" -Dclover=TRUE -Dtwisted_mass=TRUE -Dtm_clover=TRUE -Dcean=FALSE -Dmm_malloc=TRUE -Dtesting=TRUE -DPYTHON_LIBRARY=${PYTHON_ROOT}/lib/libpython3.6m.so -DPYTHON_INCLUDE_DIR=${PYTHON_ROOT}/include/python3.6m"
 CXX_FLAGS[qphix]+=" -restrict "
 
-# CONFIG_FLAGS[qphix]+=" --disable-cean --enable-clover --enable-proc=AVX --enable-soalen=4 "
-CONFIG_FLAGS[chroma]+=" --enable-sse-scalarsite-bicgstab-kernels --enable-sse2 --enable-sse3 --disable-cean --enable-cpp-wislon-dslash --enable-qphix-solver-arch=avx --enable-qphix-solver-soalen=4 --enable-qphix-solver-inner-soalen=8 --enable-qphix-solver-inner-type=float --enable-qphix-solver-compress12 --with-qphix-solver=${INSTALL[qphix]}" #--enable-lapack=lapack 
+CONFIG_FLAGS[chroma]+=" --enable-sse-scalarsite-bicgstab-kernels --enable-sse2 --enable-sse3 --disable-cean --enable-cpp-wislon-dslash --enable-qphix-solver-arch=avx --enable-qphix-solver-soalen=4 --enable-qphix-solver-inner-type=float --enable-qphix-solver-compress12 --with-qphix-solver=${INSTALL[qphix]}" #--enable-lapack=lapack 

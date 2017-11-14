@@ -5,7 +5,7 @@ HOST=x86_64-linux-gnu
 module purge
 module load GCC/7.2.0 ParaStationMPI/5.2.0-1 HDF5/1.8.19 FFTW/3.3.6
 
-INSTALL[hdf5]=/usr/local/software/jureca/Stages/2017a/software/HDF5/1.8.19-gpsmpi-2017b
+INSTALL[hdf5]=/usr/local/software/jureca/Stages/2017b/software/HDF5/1.8.19-gpsmpi-2017b
 INSTALL[fftw]=/usr/local/software/jureca/Stages/2016b/software/FFTW/3.3.6-gpsmpi-2017b
 
 GET[libxml2]='curl ftp://xmlsoft.org/libxml2/libxml2-2.9.4.tar.gz -o ${SOURCE[$LIBRARY]%/*}/libxml2-2.9.4.tar.gz; pushd ${SOURCE[$LIBRARY]%/*}; tar -xzf libxml2-2.9.4.tar.gz; mv libxml2-2.9.4 ${SOURCE[$LIBRARY]}; popd;'

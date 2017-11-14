@@ -72,6 +72,8 @@ BUILD[chroma_single]='${DIR[BUILD]}/chroma_single'
 unset LOG
 declare -A LOG
 
+LOG[SELF]='${DIR[LOG]}/script'
+
 LOG[qmp]='${DIR[LOG]}/qmp'
 LOG[libxml2]='${DIR[LOG]}/libxml2'
 LOG[hdf5]='${DIR[LOG]}/hdf5'

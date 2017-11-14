@@ -2,7 +2,6 @@
 # Installer suite for USQCD and related packages.
 # Copyright (C) 2016  Evan Berkowitz
 
-
 if [[ ! ${BASH_VERSINFO[0]} -gt 3 ]]; then
     # Your preferred bash must have associative arrays, or LOTS of things will fail.
     # Practically speaking, this means you need bash version 4 or later.
@@ -134,6 +133,10 @@ fi
 source ${script_folder}/machines/$MACHINE.sh    # Read the user options, as some are needed for
 source ${script_folder}/machines/default.sh     # the default settings
 source ${script_folder}/machines/$MACHINE.sh    # after which, the user can over-ride the defaults
+
+# Direct output to a log file but also to the screen:
+mkdir -p $(UNQUOTE "${LOG[SELF]}")
+exec 3>&1 4>&2 > >(tee "$(UNQUOTE ${LOG[SELF]}/$LIBRARY)") 2>&1
 
 if [[ "stack" == "$LIBRARY" ]]; then
     for library in $(UNQUOTE $STACK); do

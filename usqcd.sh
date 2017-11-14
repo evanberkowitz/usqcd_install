@@ -136,7 +136,7 @@ source ${script_folder}/machines/$MACHINE.sh    # after which, the user can over
 
 # Direct output to a log file but also to the screen:
 mkdir -p $(UNQUOTE "${LOG[SELF]}")
-exec 3>&1 4>&2 > >(tee "$(UNQUOTE ${LOG[SELF]}/$LIBRARY)") 2>&1
+exec 3>&1 4>&2 > >(tee "$(UNQUOTE ${LOG[SELF]}/$LIBRARY.$ACTION.log)") 2>&1
 
 if [[ "stack" == "$LIBRARY" ]]; then
     for library in $(UNQUOTE $STACK); do

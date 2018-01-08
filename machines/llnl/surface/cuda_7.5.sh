@@ -1,4 +1,4 @@
-BASE=/nfs/tmp2/lattice_qcd/surface/gnu/USQCD/example
+BASE=/nfs/tmp2/lattice_qcd/surface/cuda_7.5/USQCD
 GPUS=1
 
 # load dotkit
@@ -7,7 +7,7 @@ GPUS=1
 module purge
 use hdf5-gnu-parallel-mvapich2-1.8.16 > /dev/null
 use mvapich2-gnu-2.2                  > /dev/null
-module load cudatoolkit/8.0
+module load cudatoolkit/7.5
 module load gnu/4.9.2
 module load fftw/3.2
 

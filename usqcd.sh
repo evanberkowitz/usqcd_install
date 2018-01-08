@@ -62,6 +62,9 @@ if [[ ! -z "$help" ]]; then
 fi
 
 MACHINE=$1
+MACHINE=${MACHINE#machines/}
+MACHINE=${MACHINE%.sh}
+
 LIBRARY=$2
 ACTION=$3
 

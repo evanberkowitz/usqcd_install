@@ -19,6 +19,9 @@ INSTALL[fftw]=${FFTW_LIBS%/*}
 
 STACK="qmp libxml2 qdpxx quda chroma"
 
+GIT_BRANCH[quda]="feature/multigrid"
+CONFIG_FLAGS[quda]+=" -DQUDA_MULTIGRID=ON -DCMAKE_BUILD_TYPE=RELEASE "
+
 export CC=mpicc
 export CXX=mpicxx
 

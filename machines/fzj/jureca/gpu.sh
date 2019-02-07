@@ -1,14 +1,13 @@
-BASE=$WORK/USQCD/jureca/gpu
+BASE=$PROJECT/USQCD/jureca/gpu
 GPUS=1
 HOST=x86_64-linux-gnu
 
-module load GCC/5.5.0 MVAPICH2/2.3a-GDR HDF5/1.8.20 FFTW/3.3.7
-module load CUDA/9.1.85
-module load CMake/3.11.1
+module purge
+module load GCC/7.3.0 MVAPICH2/2.3-GDR HDF5/1.8.20 FFTW/3.3.8 CUDA/9.2.88 CMake/3.13.0
 
 DIR[SOURCE]=$HOME/USQCD/jureca/source
-INSTALL[hdf5]=/usr/local/software/jureca/Stages/2018a/software/HDF5/1.8.20-gpsmpi-2018a
-INSTALL[fftw]=/usr/local/software/jureca/Stages/2018a/software/FFTW/3.3.7-gpsmpi-2018a
+INSTALL[hdf5]=/usr/local/software/jureca/Stages/2018b/software/HDF5/1.8.20-gpsmpi-2018b
+INSTALL[fftw]=/usr/local/software/jureca/Stages/2018b/software/FFTW/3.3.8-gpsmpi-2018b
 
 export HOST=x86_64-linux-gnu
 export GPU_ARCH=sm_30

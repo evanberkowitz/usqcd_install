@@ -1,4 +1,4 @@
-BASE=$HOME/USQCD/jureca/cpu
+BASE=$PROJECT/USQCD/jureca/cpu
 
 HOST=x86_64-linux-gnu
 

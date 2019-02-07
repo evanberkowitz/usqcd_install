@@ -1,12 +1,13 @@
-BASE=/homea/jias41/jias4102/USQCD/jureca
+BASE=$HOME/USQCD/jureca/cpu
 
 HOST=x86_64-linux-gnu
 
 module purge
-module load GCC/7.2.0 ParaStationMPI/5.2.0-1 HDF5/1.8.19 FFTW/3.3.6
+module load GCC/8.2.0 ParaStationMPI/5.2.1-1 HDF5/1.10.1 FFTW/3.3.8 CMake
 
-INSTALL[hdf5]=/usr/local/software/jureca/Stages/2017b/software/HDF5/1.8.19-gpsmpi-2017b
-INSTALL[fftw]=/usr/local/software/jureca/Stages/2016b/software/FFTW/3.3.6-gpsmpi-2017b
+DIR[SOURCE]=$HOME/USQCD/jureca/source
+INSTALL[hdf5]=/usr/local/software/jureca/Stages/2018b/software/HDF5/1.10.1-gpsmpi-2018b
+INSTALL[fftw]=/usr/local/software/jureca/Stages/2018b/software/FFTW/3.3.8-gpsmpi-2018b
 
 GET[libxml2]='curl ftp://xmlsoft.org/libxml2/libxml2-2.9.4.tar.gz -o ${SOURCE[$LIBRARY]%/*}/libxml2-2.9.4.tar.gz; pushd ${SOURCE[$LIBRARY]%/*}; tar -xzf libxml2-2.9.4.tar.gz; mv libxml2-2.9.4 ${SOURCE[$LIBRARY]}; popd;'
 
